@@ -1,0 +1,16 @@
+[ourInstance1] __ARG1__: 
+[ourInstance1] singletonValue: instance-1-val
+[ourInstance1] instanceValue: instance-1-val
+[ourInstance1] ourInstance1__instanceArray[1]: instance-1-val
+[ourInstance2] __ARG1__: default-2-val
+[ourInstance2] singletonValue: instance-1-val
+[ourInstance2] instanceValue: 
+[ourInstance2] ourInstance2__instanceArray[1]: 
+[ourInstance2] __ARG1__: default-2-val
+[ourInstance2] singletonValue: instance-2-val
+[ourInstance2] instanceValue: instance-2-val
+[ourInstance2] ourInstance2__instanceArray[1]: instance-2-val
+[ourInstance1] __ARG1__: 
+[ourInstance1] singletonValue: instance-2-val
+[ourInstance1] instanceValue: instance-1-val
+[ourInstance1] ourInstance1__instanceArray[1]: instance-1-val

@@ -1,0 +1,14 @@
+{
+  "name": "bash.origin.modules",
+  "version": "0.1.0",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "escape-string-regexp": "^1.0.5",
+    "fs-extra": "^1.0.0",
+    "minimist": "^1.2.0",
+    "uuid": "^3.0.1"
+  },
+  "scripts": {
+      "test": "BO_LOADED= tests/run.sh"
+  }
+}

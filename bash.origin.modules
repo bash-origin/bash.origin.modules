@@ -1,0 +1,29 @@
+#!/bin/bash
+# Source https://github.com/cadorn/bash.origin
+. "$HOME/.bash.origin"
+function init {
+		eval BO_SELF_BASH_SOURCE="$BO_READ_SELF_BASH_SOURCE"
+		BO_deriveSelfDir ___TMP___ "$BO_SELF_BASH_SOURCE"
+		local __BO_DIR__="$___TMP___"
+
+		# TODO: Make this a unique prefix
+		__bash_origin_modules__BO_DIR__="$__BO_DIR__"
+
+		function compile {
+
+				local sourcePath="$1"
+				local targetPath="$2"
+				local shebang="#!/usr/bin/env bash.origin.script"
+
+				if [[ "$(head -1 "$sourcePath")" != "$shebang"* ]] ; then
+						echo "ERROR: Module source at '$sourcePath' does not declare '$shebang'! (pwd: $(pwd))"
+						exit 1
+				fi
+
+				BO_log "$BO_VERBOSE" "Compiling source module '$sourcePath' to '$targetPath'"
+
+				BO_run_node "${__bash_origin_modules__BO_DIR__}/compiler.js" "$sourcePath" "$targetPath"
+		}
+
+}
+init "$@"
