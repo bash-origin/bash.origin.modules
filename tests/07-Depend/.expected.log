@@ -1,2 +1,2 @@
 __DEPEND__: {"cli":"@com.github/bash-origin/bash.origin.cli#1"}
-Running 'cli fingerprint': 
+Running 'cli fingerprint': Darwin
