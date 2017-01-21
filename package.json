@@ -2,6 +2,7 @@
   "name": "bash.origin.modules",
   "version": "0.1.0",
   "dependencies": {
+    "bash.origin.test": "0.1.x",
     "bluebird": "^3.4.6",
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^1.0.0",
@@ -9,6 +10,6 @@
     "uuid": "^3.0.1"
   },
   "scripts": {
-      "test": "BO_LOADED= tests/run.sh"
+    "test": "bash.origin.test tests"
   }
 }

@@ -13,7 +13,7 @@ FS.existsAsync = function (path) {
     });
 };
 
-const VERBOSE = !!process.env.VERBOSE || false;
+const VERBOSE = !!process.env.BO_VERBOSE || false;
 
 
 exports.main = function () {
@@ -53,9 +53,28 @@ exports.main = function () {
                     var startIndent = null;
                     var endRe = null;
                     var startBuffer = null;
+                    var skipSection = null;
                     lines = lines.map(function (line) {
 
                         if (!endRe) {
+
+                            if (!skipSection) {
+                                // TODO: Make this more generic.
+                                if (/--eval '$/.test(line)) {
+                                    skipSection = {
+                                        lookFor: /^\s*'\s*$/
+                                    }
+                                }
+                            } else {
+                                if (skipSection.lookFor.test(line)) {
+                                    skipSection = null;
+                                    return line;
+                                }
+                            }
+                            if (skipSection) {
+                                return line;
+                            }
+
                             // Find starting bracket.
                             if (
                                 (m = line.match(re)) &&
@@ -80,6 +99,9 @@ exports.main = function () {
                                 buffer = buffer.join("\n")
                                     // Escape '\$'
                                     .replace(/\\\$/g, '\\\\$');
+
+                                if (VERBOSE) console.log("Parsing JSON section:", buffer);
+
                                 ret += '"'
                                     + JSON.stringify(JSON.parse(buffer))
                                     // Escape JSON '"' as we are wrapping in '"'
@@ -92,6 +114,7 @@ exports.main = function () {
                             } catch (err) {
                                 console.error("ERROR: " + err.message + " while parsing JSON:", buffer, err.stack);
                                 throw err;
+                                //ret += buffer;
                             }
                             if (m[1]) {
                                 ret += " " + m[1];
@@ -123,26 +146,84 @@ exports.main = function () {
 
                     // Prefix variables
                     var variables = {};
-                    var re = /^\s*(single|declare(?:\s[-\w]+)?|local)\s(?:(.+)[\s;=])?(.*)$/mg;
+                    var re = /^\s*(single|declare(?: [-\w]+)?|local|depend) (?:([^\n=]+)[ ;=])?([^\n]*)$/mg;
                     var match = null;
                     while ( (match = re.exec(compiledSourceCode)) ) {
-                        variables[match[2]] = {
-                            "match": match[0],
-                            "scope": match[1],
-                            "name": match[2],
-                            "value": match[3]
+                        if (!match[2]) {
+                            match[2] = match[3];
+                            match[3] = (void 0);
+                        }
+                        if (
+                            !variables[match[2]] ||
+                            (
+                                typeof variables[match[2]].value === "undefined" &&
+                                typeof match[3] !== "undefined"
+                            )
+                        ) {
+                            variables[match[2]] = {
+                                "match": match[0],
+                                "scope": match[1],
+                                "name": match[2],
+                                "value": match[3]
+                            };
                         }
                         compiledSourceCode = compiledSourceCode.replace(
                             new RegExp(REGEXP_ESCAPE(match[0]), "g"),
                             match[0].replace(/^(\s*)local/, "$1export")
                         );
                     }
+
+
                     Object.keys(variables).forEach(function (variableName) {
                         if (VERBOSE) console.log("Prefixing variable '" + variableName + "' for module '" + sourceFilePath + "'");
 
                         var replacement = "$1'${___bo_module_instance_alias___}'__" + variableName + "$2";
 
+                        if (variables[variableName].scope === "depend") {
+
+                            var dependDeclarations = null;
+                            try {
+                                dependDeclarations = JSON.parse(JSON.parse(variables[variableName].name));
+                            } catch (err) {
+                                err.message += " (while parsing 'depend' from file '" + sourceFilePath + "')";
+                                err.stack += "\n(while parsing 'depend' from file '" + sourceFilePath + "')";
+                                throw err;
+                            }
+
+                            compiledSourceCode = compiledSourceCode.replace(
+                                new RegExp("^" + REGEXP_ESCAPE(variables[variableName].match) + "$", "gm"),
+                                [
+                                    "'${___bo_module_instance_alias___}'__DEPEND=\"" + JSON.stringify(dependDeclarations).replace(/"/g, '\\"') + "\""
+                                ].concat(
+                                    Object.keys(dependDeclarations).map(function (alias) {
+                                        var uri = dependDeclarations[alias];
+                                        var config = {};
+                                        if (typeof uri !== "string") {
+                                            uri = Object.keys(dependDeclarations[alias])[0];
+                                            config = dependDeclarations[alias][uri];
+                                        }
+                                        return [
+                                            'function CALL_' + alias + ' {',
+                                            '    export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
+                                            '    CALL_IMPL_' + alias + ' "$@"',
+                                            '}',
+                                            'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" ' + JSON.stringify(JSON.stringify(config))
+                                        ].join("\n");
+                                    })
+                                ).join("\n")
+                            );
+
+                            replacement = null;
+
+                        } else
                         if (variables[variableName].scope === "single") {
+
+                            // Remove non-initializing singleton declaration.
+                            // We do not need to declare it in bash.
+                            compiledSourceCode = compiledSourceCode.replace(
+                                new RegExp("^" + REGEXP_ESCAPE(variables[variableName].match.replace(/=.*$/, "")) + " *$", "gm"),
+                                "#" + variables[variableName].match.replace(/=.*$/, "")
+                            );
 
                             if (typeof variables[variableName].value !== "undefined") {
                                 // TODO: Fix prefixing of variables with value assignment.
@@ -151,19 +232,15 @@ exports.main = function () {
                                     variables[variableName].match.replace(/^(\s*)single\s+/, "$1")
                                 );
                             }
-                            // Remove non-initializing singleton declaration.
-                            // We do not need to declare it in bash.
-                            compiledSourceCode = compiledSourceCode.replace(
-                                new RegExp("^" + REGEXP_ESCAPE(variables[variableName].match.replace(/=.*$/, "")) + "\\s*$", "gm"),
-                                "#" + variables[variableName].match.replace(/=.*$/, "")
-                            );
                             replacement = "$1" + singletonNamespacePrefix + "__" + variableName + "$2";
                         }
 
-                        compiledSourceCode = compiledSourceCode.replace(
-                            new RegExp("([\\s\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "g"),
-                            replacement
-                        );
+                        if (replacement !== null) {
+                            compiledSourceCode = compiledSourceCode.replace(
+                                new RegExp("([\\s\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "g"),
+                                replacement
+                            );
+                        }
                     });
 
 
@@ -200,6 +277,11 @@ exports.main = function () {
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARGS__\}?/g, "'${___bo_module_instance_args___}'");
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG1__\}?/g, "'${___bo_module_instance_arg1___}'");
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG2__\}?/g, "'${___bo_module_instance_arg2___}'");
+                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__DEPEND__\}?/g, "${'${___bo_module_instance_alias___}'__DEPEND}");
+
+                    // Fix variables that are nested too deeply
+                    // '"'"''${___bo_module_instance_arg1___}''"'"' -> '${___bo_module_instance_arg1___}'
+                    compiledSourceCode = compiledSourceCode.replace(/'"'"''\$\{[^\}]+\}''"'"'/g, "'$1'");
 
 
                     // TODO: Adjust indenting properly using sourcemint helper

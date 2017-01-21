@@ -16,6 +16,15 @@ function EXPORTS_setPureJSON {
     				}
     		}
     }
+
+    # NOTE: The following ensures that JSON blocks in multi-line strings
+    #       do not get parsed.
+    BO_run_node --eval '
+        var foo = {
+            key: "val"
+        }
+        console.log("FOO:", foo);
+    '
 }
 
 function EXPORTS_print {

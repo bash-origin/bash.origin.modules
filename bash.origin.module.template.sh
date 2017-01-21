@@ -30,6 +30,7 @@ function '${___bo_module_instance_alias___}' {
 		local func="'${___bo_module_instance_alias___}'__EXPORTS_$1"
     [ -z "\$BO_VERBOSE" ] || BO_log "\$BO_VERBOSE" "[bash.origin.module][compiled:%%%___FILENAME___%%%] Call function '"'"'\${func}'"'"'"
 		shift
+    export CALLER_DIRNAME="$___bo_module_instance_caller_dirname___"
 		"$func" "$@"
     [ -z "\$BO_VERBOSE" ] || BO_log "\$BO_VERBOSE" "[bash.origin.module][compiled:%%%___FILENAME___%%%] Done calling function '"'"'\${func}'"'"'"
 }
