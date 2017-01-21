@@ -11,7 +11,7 @@ function compile {
 
 		if [ ! -e "$__bash_origin_modules__BO_DIR__/node_modules" ]; then
 				pushd "$__bash_origin_modules__BO_DIR__" > /dev/null
-						BO_npm_install
+						BO_run_npm install
 				popd > /dev/null
 		fi
 
