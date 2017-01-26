@@ -6,7 +6,9 @@ local __BO_DIR__="$___TMP___"
 
 pushd "$__BO_DIR__" > /dev/null
 
+		echo "TEST_MATCH_IGNORE>>>"
 		BO_requireModule "./module.bo.sh" as "ourInstance"
+		echo "<<<TEST_MATCH_IGNORE"
 
 		ourInstance set "foo"
 		echo "Value: $(ourInstance print)"
