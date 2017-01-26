@@ -1,7 +1,0 @@
-__BUILD_UUID__: fake-f86-0191-4c48-97e7-c168f2355199
-__DIRNAME__: /fake/absolute/path/04-Reserved-Variables
-__FILENAME__: module.bo.sh
-__INSTANCE_ALIAS__: ourInstance
-__ARGS__: arg1 arg2
-__ARG1__: arg1
-__ARG2__: arg2

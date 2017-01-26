@@ -1,8 +1,0 @@
-__ARGS__: arg1 arg2
-__ARG1__: arg1
-__ARG2__: _
-[ourInstance] 1: printArg
-[ourInstance] __ARGS__: arg1 arg2
-[ourInstance] __ARG1__: arg1
-[ourInstance] arg1: arg1
-[ourInstance] __ARG2__: arg2
