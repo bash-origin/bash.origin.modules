@@ -264,7 +264,7 @@ exports.main = function () {
                     functionNames.forEach(function (functionName) {
                         if (VERBOSE) console.log("Prefixing function '" + functionName + "' for module '" + sourceFilePath + "'");
                         compiledSourceCode = compiledSourceCode.replace(
-                            new RegExp("([\\s`])" + REGEXP_ESCAPE(functionName) + "([\\s\\{])", "g"),
+                            new RegExp("([\\s`!])" + REGEXP_ESCAPE(functionName) + "([\\s\\{;])", "g"),
                             "$1'${___bo_module_instance_alias___}'__" + functionName + "$2"
                         );
                     });
