@@ -32,7 +32,9 @@ function '${___bo_module_instance_alias___}' {
 		shift
     export CALLER_DIRNAME="$___bo_module_instance_caller_dirname___"
 		"$func" "$@"
+    rc=$?
     [ -z "\$BO_VERBOSE" ] || BO_log "\$BO_VERBOSE" "[bash.origin.module][compiled:%%%___FILENAME___%%%] Done calling function '"'"'\${func}'"'"'"
+    return $rc
 }
 
 %%%___COMPILED_MODULE_SOURCE___%%%

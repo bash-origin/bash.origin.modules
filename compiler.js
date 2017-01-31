@@ -12,6 +12,7 @@ FS.existsAsync = function (path) {
         return FS.exists(path, resolve);
     });
 };
+const CODEBLOCK = require("codeblock");
 
 const VERBOSE = !!process.env.BO_VERBOSE || false;
 
@@ -102,8 +103,12 @@ exports.main = function () {
 
                                 if (VERBOSE) console.log("Parsing JSON section:", buffer);
 
+                                var purified = CODEBLOCK.purifyCode(buffer, {
+                                    freezeToJSON: true
+                                });
+
                                 ret += '"'
-                                    + JSON.stringify(JSON.parse(buffer))
+                                    + JSON.stringify(JSON.parse(purified))
                                     // Escape JSON '"' as we are wrapping in '"'
                                     .replace(/"/g, '\\"')
                                     // Escape '\"'
@@ -112,6 +117,7 @@ exports.main = function () {
                                     .replace(/\\\\\$/g, "\\\\\\\$")
                                     + '"';
                             } catch (err) {
+                                console.error("purified:", purified);
                                 console.error("ERROR: " + err.message + " while parsing JSON:", buffer, err.stack);
                                 throw err;
                                 //ret += buffer;
@@ -264,7 +270,7 @@ exports.main = function () {
                     functionNames.forEach(function (functionName) {
                         if (VERBOSE) console.log("Prefixing function '" + functionName + "' for module '" + sourceFilePath + "'");
                         compiledSourceCode = compiledSourceCode.replace(
-                            new RegExp("([\\s`!])" + REGEXP_ESCAPE(functionName) + "([\\s\\{;])", "g"),
+                            new RegExp("([\\s`!\\(])" + REGEXP_ESCAPE(functionName) + "([\\s\\{;\\)])", "g"),
                             "$1'${___bo_module_instance_alias___}'__" + functionName + "$2"
                         );
                     });
