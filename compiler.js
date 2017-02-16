@@ -111,6 +111,11 @@ exports.main = function () {
                                     + JSON.stringify(JSON.parse(purified))
                                     // Escape JSON '"' as we are wrapping in '"'
                                     .replace(/"/g, '\\"')
+                                    // The following are used to escape regular expressions used in the JSON/codeblocks.
+                                    // TODO: Make these more generic by using better parsers.
+                                    // TODO: Add tests for all these. Currently being tested by dependent modules.
+                                    // Escape '\?'
+                                    .replace(/\\\?/g, '\\\\?')
                                     // Escape '\"'
                                     .replace(/\\\\"/g, '\\\\\\"')
                                     // Escape '\$' which is now '\\$'
@@ -270,15 +275,34 @@ exports.main = function () {
                     functionNames.forEach(function (functionName) {
                         if (VERBOSE) console.log("Prefixing function '" + functionName + "' for module '" + sourceFilePath + "'");
                         compiledSourceCode = compiledSourceCode.replace(
-                            new RegExp("([\\s`!\\(])" + REGEXP_ESCAPE(functionName) + "([\\s\\{;\\)])", "g"),
+                            new RegExp("([\\s`!\\(\"'])" + REGEXP_ESCAPE(functionName) + "([\\s\\{;\\)\"'])", "g"),
                             "$1'${___bo_module_instance_alias___}'__" + functionName + "$2"
                         );
                     });
 
 
+                    var moduleInitCode = [];
+
+                    var dirname = PATH.dirname(absoluteSourceFilePath);
+                    var rtDirname = PATH.basename(dirname).replace(/^.+~([^~]+)$/, "$1");
+
+                    // If '__RT_DIRNAME__' variable is needed (found in code) we make sure the directory exists
+                    if (/__RT_DIRNAME__/.test(compiledSourceCode)) {
+                        moduleInitCode = moduleInitCode.concat([
+                            'if [ ! -e "\'${___bo_module_rt_caller_pwd___}\'/.rt/' + rtDirname + '" ]; then',
+                                'set +e',
+                                'mkdir -p "\'${___bo_module_rt_caller_pwd___}\'/.rt/' + rtDirname + '" || true',
+                                'set -e',
+                            'fi'
+                        ]);
+                    }
+
+
                     // Replace bash.origin modules reserved environment variables
-                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__FILENAME__\}?/g, PATH.basename(absoluteSourceFilePath));
-                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__DIRNAME__\}?/g, PATH.dirname(absoluteSourceFilePath));
+                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__FILENAME__\}?/g, absoluteSourceFilePath);
+                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__BASENAME__\}?/g, PATH.basename(absoluteSourceFilePath));
+                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__DIRNAME__\}?/g, dirname);
+                    compiledSourceCode = compiledSourceCode.replace(/\$\{?__RT_DIRNAME__\}?/g, "'${___bo_module_rt_caller_pwd___}'/.rt/" + rtDirname);
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__BUILD_UUID__\}?/g, buildUUID);
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARGS__\}?/g, "'${___bo_module_instance_args___}'");
                     compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG1__\}?/g, "'${___bo_module_instance_arg1___}'");
@@ -291,13 +315,16 @@ exports.main = function () {
 
 
                     // TODO: Adjust indenting properly using sourcemint helper
+                    compiledModuleCode = compiledModuleCode.replace(/%%%___MODULE_INIT_CODE___%%%/g, moduleInitCode.join("\n"));
                     compiledModuleCode = compiledModuleCode.split("%%%___COMPILED_MODULE_SOURCE___%%%");
                     compiledModuleCode.splice(1, 0, compiledSourceCode);
                     compiledModuleCode = compiledModuleCode.join("");
 
                     // Replace bash.origin modules variables
-                    compiledModuleCode = compiledModuleCode.replace(/%%%___FILENAME___%%%/g, PATH.basename(absoluteSourceFilePath));
-                    compiledModuleCode = compiledModuleCode.replace(/%%%___DIRNAME___%%%/g, PATH.dirname(absoluteSourceFilePath));
+                    compiledModuleCode = compiledModuleCode.replace(/%%%___FILENAME___%%%/g, absoluteSourceFilePath);
+                    compiledModuleCode = compiledModuleCode.replace(/%%%__BASENAME__%%%/g, PATH.basename(absoluteSourceFilePath));
+                    compiledModuleCode = compiledModuleCode.replace(/%%%___DIRNAME___%%%/g, dirname);
+                    compiledModuleCode = compiledModuleCode.replace(/%%%__RT_DIRNAME__%%%/g, "'${___bo_module_rt_caller_pwd___}'/.rt/" + rtDirname);
                     compiledModuleCode = compiledModuleCode.replace(/%%%___BUILD_UUID___%%%/g, buildUUID);
 
                     var rtContextUID = CRYPTO.createHash('sha1').update(

@@ -25,6 +25,10 @@ function EXPORTS_setPureJSON {
         }
         console.log("FOO:", foo);
     '
+
+#    {
+#        "commented": "out"
+#    }
 }
 
 function EXPORTS_print {

@@ -17,6 +17,8 @@ function init {
         # as opposed to what is stored here, the module will be re-built.
         local ___bo_module_rt_context_uid___="%%%___RT_CONTEXT_UID___%%%"
 
+        local ___bo_module_rt_caller_pwd___="$(pwd)"
+
         local ___bo_module_instance_alias___="$1"
         shift
         local ___bo_module_instance_args___="$@"
@@ -36,6 +38,8 @@ function '${___bo_module_instance_alias___}' {
     [ -z "\$BO_VERBOSE" ] || BO_log "\$BO_VERBOSE" "[bash.origin.module][compiled:%%%___FILENAME___%%%] Done calling function '"'"'\${func}'"'"'"
     return $rc
 }
+
+%%%___MODULE_INIT_CODE___%%%
 
 %%%___COMPILED_MODULE_SOURCE___%%%
 

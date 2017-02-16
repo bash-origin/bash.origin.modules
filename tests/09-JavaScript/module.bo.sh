@@ -10,12 +10,13 @@ function EXPORTS_run {
         "args": {
             "arg1": "val1"
         },
-        "impl": (javascript (args) >>>
+#        "commented": function () {},
+        "impl": function (args) {
 
             console.log("ARGS:", args);
 
             return ("using arg val: " + args.arg1);
-        <<<)
+        }
     }
 
     echo "CONFIG: $config"
