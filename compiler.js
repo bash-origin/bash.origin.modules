@@ -57,6 +57,11 @@ exports.main = function () {
                     var skipSection = null;
                     lines = lines.map(function (line) {
 
+                        // Skip commented out lines starting with '#' or '//'
+                        if (/^[\s\t]*(#|\/\/)/.test(line)) {
+                            return "";
+                        }
+
                         if (!endRe) {
 
                             if (!skipSection) {

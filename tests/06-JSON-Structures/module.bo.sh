@@ -6,6 +6,7 @@ function EXPORTS_setPureJSON {
     pureJSON={
         "arg1": "$1",
         "nastyString": "_\$1_\$h_-_'_\"_#_(_)_{_}_^_",
+#        "commented": "out",
     		"level-1-key": {
     				"level-2-key": {
     						"string": "foo",
