@@ -10,8 +10,7 @@ function EXPORTS_run {
         "args": {
             "arg1": "val1"
         },
-#        "commented": function () {},
-        "impl": function (args) {
+        "impl": function /* CodeBlock */ (args) {
 
             console.log("ARGS:", args);
 
