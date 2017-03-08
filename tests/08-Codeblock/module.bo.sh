@@ -1,7 +1,7 @@
 #!/usr/bin/env bash.origin.script
 
 depend {
-    "codeblock": "@com.github/0ink/codeblock#s1"
+    "codeblock": "@com.github/0ink/codeblock.js#s1"
 }
 
 function EXPORTS_run {
