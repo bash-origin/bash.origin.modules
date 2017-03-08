@@ -1,6 +1,6 @@
 {
     "name": "bash.origin.modules",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "dependencies": {
         "bash.origin.test": "^0.1.17",
         "bluebird": "^3.4.6",
