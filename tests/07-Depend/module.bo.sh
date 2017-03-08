@@ -8,5 +8,11 @@ function EXPORTS_run {
 
 		echo "__DEPEND__: ${__DEPEND__}"
 
+    # TODO: Allow for OS-dependant test variations.
+    echo "TEST_MATCH_IGNORE>>>"
+
 		echo "Running 'cli fingerprint': $(CALL_cli fingerprint --os)"
+
+    echo "<<<TEST_MATCH_IGNORE"
+
 }
