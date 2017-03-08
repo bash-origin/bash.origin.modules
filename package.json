@@ -2,7 +2,7 @@
     "name": "bash.origin.modules",
     "version": "0.1.7",
     "dependencies": {
-        "bash.origin.test": "^0.1.16",
+        "bash.origin.test": "^0.1.17",
         "bluebird": "^3.4.6",
         "codeblock": "^0.2.2",
         "escape-string-regexp": "^1.0.5",
