@@ -11,7 +11,9 @@ function compile {
 
 		if [ ! -e "$__bash_origin_modules__BO_DIR__/node_modules" ]; then
 				pushd "$__bash_origin_modules__BO_DIR__" > /dev/null
+						[ -z "$BO_IS_TEST_RUN" ] || echo "TEST_MATCH_IGNORE>>>"
 						BO_run_npm install
+						[ -z "$BO_IS_TEST_RUN" ] || echo "<<<TEST_MATCH_IGNORE"
 				popd > /dev/null
 		fi
 
