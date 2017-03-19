@@ -218,6 +218,9 @@ exports.main = function () {
                                             uri = Object.keys(dependDeclarations[alias])[0];
                                             config = dependDeclarations[alias][uri];
                                         }
+                                        if (/^@\./.test(uri)) {
+                                            uri = "@" + PATH.dirname(sourceFilePath) + "/" + uri.replace(/^@/, "");
+                                        }
                                         return [
                                             'function CALL_' + alias + ' {',
                                             '    export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
