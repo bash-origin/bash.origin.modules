@@ -255,8 +255,11 @@ exports.main = function () {
                         }
 
                         if (replacement !== null) {
+
+                            if (VERBOSE) console.log("Replace", variableName, "with", replacement);
+                            
                             compiledSourceCode = compiledSourceCode.replace(
-                                new RegExp("([\\s\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "g"),
+                                new RegExp("(^[\\s\\t]+(?:export|local)\\s|[\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "mg"),
                                 replacement
                             );
                         }
