@@ -2,8 +2,13 @@
 # Source https://github.com/cadorn/bash.origin
 # Source https://github.com/bash-origin/bash.origin
 if [ -z "${BO_LOADED}" ]; then
-    [ -z "$BO_VERBOSE" ] || BO_log "$BO_VERBOSE" "[bash.origin.module][compiled:%%%___FILENAME___%%%] Sourcing '${HOME}/.bash.origin'"
-    . "${HOME}/.bash.origin"
+    if [ ! -z "$BO_ROOT_SCRIPT_PATH" ]; then
+        [ -z "$BO_VERBOSE" ] || echo "[bash.origin.module][compiled:%%%___FILENAME___%%%] Sourcing '${BO_ROOT_SCRIPT_PATH}'"
+        . "${BO_ROOT_SCRIPT_PATH}"
+    else
+        [ -z "$BO_VERBOSE" ] || echo "[bash.origin.module][compiled:%%%___FILENAME___%%%] Sourcing '${HOME}/.bash.origin'"
+        . "${HOME}/.bash.origin"
+    fi
 fi
 function init {
     eval BO_SELF_BASH_SOURCE="$BO_READ_SELF_BASH_SOURCE"

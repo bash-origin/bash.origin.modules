@@ -1,10 +1,11 @@
 {
     "name": "bash.origin.modules",
     "version": "0.1.14",
+    "main": "./compiler.js",
     "dependencies": {
-        "bash.origin.test": "^0.1.17",
+        "bash.origin.test": "^0.1.26",
         "bluebird": "^3.4.6",
-        "codeblock": "^0.2.2",
+        "codeblock": "^0.2.9",
         "escape-string-regexp": "^1.0.5",
         "fs-extra": "^1.0.0",
         "minimist": "^1.2.0",
