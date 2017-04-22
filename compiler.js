@@ -111,8 +111,12 @@ exports.compile = function (sourceCode, sourceFilePath) {
 
                     ret += '"'
                         + JSON.stringify(JSON.parse(purified))
+                        // Escape all backslashes as we are wrapping again
                         .replace(/\\/g, '\\\\')
+                        // Escape all quotes as we are wrapping again
                         .replace(/"/g, '\\"')
+                        // Cleanup escaping for all '\$' variables as they should not be replaced in the bash layer.
+                        .replace(/\\\\\$/g, '\\\$')
 
 
                         // Escape JSON '"' as we are wrapping in '"'
