@@ -3,13 +3,13 @@
 local value
 
 function EXPORTS_set {
-		value="$1"
+	value="$1"
 }
 
 function EXPORTS_print {
-		INTERNAL_print
+	INTERNAL_print
 }
 
 function INTERNAL_print {
-		echo "$value"
+	echo "$value"
 }

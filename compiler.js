@@ -103,19 +103,29 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         freezeToJSON: true
                     });
 
+                    if (process.env.DEBUG) {
+                        console.error("[bash.origin.modules:compile] purified >>>");
+                        process.stderr.write(purified + "\n");
+                        console.error("<<< [bash.origin.modules:compile]");
+                    }
+
                     ret += '"'
                         + JSON.stringify(JSON.parse(purified))
-                        // Escape JSON '"' as we are wrapping in '"'
+                        .replace(/\\/g, '\\\\')
                         .replace(/"/g, '\\"')
+
+
+                        // Escape JSON '"' as we are wrapping in '"'
+//                        .replace(/"/g, '\\"')
                         // The following are used to escape regular expressions used in the JSON/codeblocks.
                         // TODO: Make these more generic by using better parsers.
                         // TODO: Add tests for all these. Currently being tested by dependent modules.
                         // Escape '\?'
-                        .replace(/\\\?/g, '\\\\?')
+//                        .replace(/\\\?/g, '\\\\?')
                         // Escape '\"'
-                        .replace(/\\\\"/g, '\\\\\\"')
+//                        .replace(/\\\\"/g, '\\\\\\"')
                         // Escape '\$' which is now '\\$'
-                        .replace(/\\\\\$/g, "\\\\\\\$")
+//                        .replace(/\\\\\$/g, "\\\\\\\$")
                         + '"';
                 } catch (err) {
                     console.error("purified:", purified);
@@ -250,7 +260,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 if (VERBOSE) console.log("Replace", variableName, "with", replacement);
                 
                 compiledSourceCode = compiledSourceCode.replace(
-                    new RegExp("(^[\\s\\t]+(?:export|local)\\s|[\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "mg"),
+                    new RegExp("(^[\\s\\t]+|^[\\s\\t]+(?:export|local)\\s|[\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "mg"),
                     replacement
                 );
             }
