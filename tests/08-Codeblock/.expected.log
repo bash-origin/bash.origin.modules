@@ -1,3 +1,3 @@
-CONFIG: {"args":{"arg1":"val1"},"impl":{".@":"github.com~0ink~codeblock/codeblock:Codeblock","_code":"\nconsole.log(\"ARGS:\", args);\n\nreturn (\"using arg val: \" + args.arg1);","_format":"javascript","_args":["args"],"_compiled":false}}
+CONFIG: {"args":{"arg1":"val1"},"impl":{".@":"github.com~0ink~codeblock/codeblock:Codeblock","_code":"\\nconsole.log(\"ARGS:\", args);\\n\\nreturn (\"using arg val: \" + args.arg1);","_format":"javascript","_args":["args"],"_compiled":false}}
 RESULT: [codeblock] ARGS: { arg1: 'val1' }
 {"args":{"arg1":"val1"},"impl":"using arg val: val1"}
