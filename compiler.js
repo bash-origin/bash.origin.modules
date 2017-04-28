@@ -344,10 +344,13 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledModuleCode = compiledModuleCode.replace(/%%%___BUILD_UUID___%%%/g, buildUUID);
 
         var rtContextUID = CRYPTO.createHash('sha1').update(
-            // TODO: Derive context UID based on features used in module file.
-            //       e.g. If NodeJS is involved, include the major version so that
-            //       binary modules get re-compiled when it changes.
-            "fake-context-id"
+            [
+                sourceFilePath,
+                // TODO: Also derive context UID based on features used in module file.
+                //       e.g. If NodeJS is involved, include the major version so that
+                //       binary modules get re-compiled when it changes.
+                "fake-context-id"                
+            ].join(":")
         ).digest('hex');
         compiledModuleCode = compiledModuleCode.replace(/%%%___RT_CONTEXT_UID___%%%/g, rtContextUID);
 
