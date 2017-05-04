@@ -28,5 +28,5 @@ function compile {
 
 		BO_log "$BO_VERBOSE" "Compiling source module '$sourcePath' to '$targetPath'"
 
-		BO_run_node "${__bash_origin_modules__BO_DIR__}/compiler.js" "$sourcePath" "$targetPath"
+		BO_run_recent_node "${__bash_origin_modules__BO_DIR__}/compiler.js" "$sourcePath" "$targetPath"
 }
