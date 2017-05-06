@@ -326,6 +326,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG1__\}?/g, "'${___bo_module_instance_arg1___}'");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG2__\}?/g, "'${___bo_module_instance_arg2___}'");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__DEPEND__\}?/g, "${'${___bo_module_instance_alias___}'__DEPEND}");
+        compiledSourceCode = compiledSourceCode.replace(/\$\{?__INSTANCE_ALIAS__\}?/g, "'${___bo_module_instance_alias___}'");
 
         // Fix variables that are nested too deeply
         // '"'"''${___bo_module_instance_arg1___}''"'"' -> '${___bo_module_instance_arg1___}'
