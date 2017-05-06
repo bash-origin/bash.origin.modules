@@ -231,7 +231,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                                 '    export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
                                 '    CALL_IMPL_' + alias + ' "$@"',
                                 '}',
-                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" ' + JSON.stringify(JSON.stringify(config))
+                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + JSON.stringify(config).replace(/"/g, '\\\\\\"') + '"'
                             ].join("\n");
                         })
                     ).join("\n")
@@ -320,6 +320,8 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__DIRNAME__\}?/g, dirname);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__RT_DIRNAME__\}?/g, "'${___bo_module_rt_caller_pwd___}'/.rt/" + rtDirname);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__BUILD_UUID__\}?/g, buildUUID);
+        compiledSourceCode = compiledSourceCode.replace(/\$\{?__IMPL_HASH__\}?/g, moduleImplementationUUID);
+        compiledSourceCode = compiledSourceCode.replace(/\$\{?__IMPL_HASH7__\}?/g, moduleImplementationUUID.substring(0, 7));
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARGS__\}?/g, "'${___bo_module_instance_args___}'");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG1__\}?/g, "'${___bo_module_instance_arg1___}'");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG2__\}?/g, "'${___bo_module_instance_arg2___}'");

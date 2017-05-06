@@ -7,6 +7,10 @@ function EXPORTS_set {
 }
 
 function EXPORTS_print {
+	EXPORTS_print2
+}
+
+function EXPORTS_print2 {
 	INTERNAL_print
 }
 
