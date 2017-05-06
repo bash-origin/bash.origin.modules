@@ -10,7 +10,8 @@ echo "__FILENAME__: $__FILENAME__"
 echo "__BASENAME__: $__BASENAME__"
 
 echo "__INSTANCE_ALIAS__: $___bo_module_instance_alias___"
-# TODO: Implement __INSTANCE_ALIAS__ 
+echo "__INSTANCE_ALIAS__: $__INSTANCE_ALIAS__"
+
 echo "__IMPL_HASH__: $__IMPL_HASH__"
 echo "__IMPL_HASH7__: $__IMPL_HASH7__"
 
