@@ -6,6 +6,6 @@ local __BO_DIR__="$___TMP___"
 
 pushd "$__BO_DIR__" > /dev/null
 
-		BO_requireModule "./module.bo.sh" as "ourInstance" "arg1" "arg2"
+    BO_requireModule "./module.bo.sh" as "ourInstance" "arg1" "arg2"
 
 popd > /dev/null

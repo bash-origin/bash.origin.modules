@@ -7,7 +7,11 @@ function EXPORTS_validate {
     ' "$1")"
 }
 
+echo "__CALLER_DIRNAME__: $__CALLER_DIRNAME__"
+
 function EXPORTS_run {
+
+    echo "__CALLER_DIRNAME__: $__CALLER_DIRNAME__"
 
     echo "__ARGS__: ${__ARGS__}"
     echo "__ARGS__: $(EXPORTS_validate "${__ARGS__}")"

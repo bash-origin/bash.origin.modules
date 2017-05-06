@@ -231,7 +231,9 @@ exports.compile = function (sourceCode, sourceFilePath) {
                                 '    export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
                                 '    CALL_IMPL_' + alias + ' "$@"',
                                 '}',
-                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + JSON.stringify(config).replace(/"/g, '\\\\\\"') + '"'
+                                'export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
+                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + JSON.stringify(config).replace(/"/g, '\\\\\\"') + '"',
+                                'export ___bo_module_instance_caller_dirname___='
                             ].join("\n");
                         })
                     ).join("\n")
@@ -327,6 +329,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__ARG2__\}?/g, "'${___bo_module_instance_arg2___}'");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__DEPEND__\}?/g, "${'${___bo_module_instance_alias___}'__DEPEND}");
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__INSTANCE_ALIAS__\}?/g, "'${___bo_module_instance_alias___}'");
+        compiledSourceCode = compiledSourceCode.replace(/\$\{?__CALLER_DIRNAME__\}?/g, "${'${___bo_module_instance_alias___}'__CALLER_DIRNAME__}");
 
         // Fix variables that are nested too deeply
         // '"'"''${___bo_module_instance_arg1___}''"'"' -> '${___bo_module_instance_arg1___}'

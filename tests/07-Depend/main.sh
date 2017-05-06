@@ -6,8 +6,8 @@ local __BO_DIR__="$___TMP___"
 
 pushd "$__BO_DIR__" > /dev/null
 
-		BO_requireModule "./module.bo.sh" as "module"
+	BO_requireModule "./module.bo.sh" as "module"
 
-		module run
+	module run
 
 popd > /dev/null

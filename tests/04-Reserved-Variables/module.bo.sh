@@ -9,6 +9,8 @@ echo "__DIRNAME__: $__DIRNAME__"
 echo "__FILENAME__: $__FILENAME__"
 echo "__BASENAME__: $__BASENAME__"
 
+# NOTE: __CALLER_DIRNAME__ will not be set because we are not being called via a bash.origin.script
+echo "__CALLER_DIRNAME__: $__CALLER_DIRNAME__"
 echo "__INSTANCE_ALIAS__: $__INSTANCE_ALIAS__"
 
 echo "__IMPL_HASH__: $__IMPL_HASH__"
