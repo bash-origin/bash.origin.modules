@@ -1,6 +1,6 @@
 {
     "name": "bash.origin.modules",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "main": "./compiler.js",
     "dependencies": {
         "bash.origin.test": "^0.1.28",
