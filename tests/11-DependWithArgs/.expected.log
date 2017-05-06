@@ -1,3 +1,4 @@
+__CALLER_DIRNAME__: TeStLoCaLiZeD
 __DEPEND__: {"mod":{"./module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
 __DEPEND__: {
     "mod": {
@@ -14,6 +15,7 @@ __DEPEND__: {
         }
     }
 }
+__CALLER_DIRNAME__: TeStLoCaLiZeD
 __ARGS__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
 __ARGS__: {
     "init": {
