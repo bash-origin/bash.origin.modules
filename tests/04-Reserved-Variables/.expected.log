@@ -3,6 +3,8 @@ __DIRNAME__:
 __FILENAME__: /module.bo.sh
 __BASENAME__: module.bo.sh
 __INSTANCE_ALIAS__: ourInstance
+__IMPL_HASH__: 82d8d913235e4831142a5235775c82be6f806ace
+__IMPL_HASH7__: 82d8d91
 __ARGS__: arg1 arg2
 __ARG1__: arg1
 __ARG2__: arg2

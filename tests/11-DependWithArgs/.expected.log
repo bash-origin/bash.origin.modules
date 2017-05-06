@@ -1,0 +1,64 @@
+__DEPEND__: {"mod":{"./module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
+__DEPEND__: {
+    "mod": {
+        "./module.bo.sh": {
+            "init": {
+                "string": "value",
+                "array": [
+                    "item"
+                ],
+                "integer": 1,
+                "boolean": true,
+                "null": null
+            }
+        }
+    }
+}
+__ARGS__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+__ARGS__: {
+    "init": {
+        "string": "value",
+        "array": [
+            "item"
+        ],
+        "integer": 1,
+        "boolean": true,
+        "null": null
+    }
+}
+__ARG1__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+__ARG1__: {
+    "init": {
+        "string": "value",
+        "array": [
+            "item"
+        ],
+        "integer": 1,
+        "boolean": true,
+        "null": null
+    }
+}
+Args: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+Args: {
+    "func": {
+        "string": "value",
+        "array": [
+            "item"
+        ],
+        "integer": 1,
+        "boolean": true,
+        "null": null
+    }
+}
+Arg1: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+Arg1: {
+    "func": {
+        "string": "value",
+        "array": [
+            "item"
+        ],
+        "integer": 1,
+        "boolean": true,
+        "null": null
+    }
+}
