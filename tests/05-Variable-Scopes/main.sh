@@ -6,27 +6,27 @@ local __BO_DIR__="$___TMP___"
 
 pushd "$__BO_DIR__" > /dev/null
 
-		BO_requireModule "./module.bo.sh" as "ourInstance1"
-		ourInstance1 print
+    BO_requireModule "./module.bo.sh" as "ourInstance1"
+    ourInstance1 print
 
-		BO_requireModule "./module.bo.sh" as "ourInstance2" "default-2-val"
+    BO_requireModule "./module.bo.sh" as "ourInstance2" "default-2-val"
 
-		echo "--"
+    echo "--"
 
-		ourInstance1 print
-		ourInstance1 setInstance "instance-1-val"
-		ourInstance1 setSingleton "instance-1-val"
-		ourInstance1 print
+    ourInstance1 print
+    ourInstance1 setInstance "instance-1-val"
+    ourInstance1 setSingleton "instance-1-val"
+    ourInstance1 print
 
-		echo "--"
+    echo "--"
 
-		ourInstance2 print
-		ourInstance2 setInstance "instance-2-val"
-		ourInstance2 setSingleton "instance-2-val"
-		ourInstance2 print
+    ourInstance2 print
+    ourInstance2 setInstance "instance-2-val"
+    ourInstance2 setSingleton "instance-2-val"
+    ourInstance2 print
 
-		echo "--"
+    echo "--"
 
-		ourInstance1 print
+    ourInstance1 print
 
 popd > /dev/null

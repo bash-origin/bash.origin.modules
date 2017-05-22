@@ -26,7 +26,12 @@ exports.compile = function (sourceCode, sourceFilePath) {
         var compiledModuleCode = templateSourceCode;
 
         var buildUUID = UUID_V4();
-        var moduleImplementationUUID = CRYPTO.createHash('sha1').update(sourceFilePath).digest('hex');
+
+        var moduleImplementationUUID = CRYPTO.createHash('sha1').update(
+            process.env.BO_WORKSPACE_ROOT ?
+                PATH.relative(process.env.BO_WORKSPACE_ROOT, sourceFilePath) :
+                sourceFilePath
+        ).digest('hex');
         var singletonNamespacePrefix = "___bo_module_singleton_ns_" + moduleImplementationUUID + "___";
 
 
@@ -81,7 +86,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         "{"
                     ];
                     startIndent = m[1];
-                    endRe = new RegExp("^" + REGEXP_ESCAPE(startIndent) + "\\}(\s\\S.*)?$");
+                    endRe = new RegExp("^" + REGEXP_ESCAPE(startIndent) + "\\}(\\s.*)?$");
                     startBuffer = line.replace(/\{$/, "");
                     return null;
                 }
@@ -117,7 +122,8 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         .replace(/"/g, '\\"')
                         // Cleanup escaping for all '\$' variables as they should not be replaced in the bash layer.
                         .replace(/\\\\\$/g, '\\\$')
-
+                        // '"\\n\\\"' -> '"\\\\\n\\\"'
+                        .replace(/"(\\\\n\\\\\\)"/g, '"\\\\\\$1"')
 
                         // Escape JSON '"' as we are wrapping in '"'
 //                        .replace(/"/g, '\\"')
@@ -131,6 +137,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         // Escape '\$' which is now '\\$'
 //                        .replace(/\\\\\$/g, "\\\\\\\$")
                         + '"';
+
                 } catch (err) {
                     console.error("purified:", purified);
                     console.error("ERROR: " + err.message + " while parsing JSON:", buffer, err.stack);
@@ -223,6 +230,9 @@ exports.compile = function (sourceCode, sourceFilePath) {
                                 uri = Object.keys(dependDeclarations[alias])[0];
                                 config = dependDeclarations[alias][uri];
                             }
+                            if (/^\./.test(uri)) {
+                                uri = PATH.join(PATH.dirname(sourceFilePath), uri);
+                            } else
                             if (/^@\./.test(uri)) {
                                 uri = "@" + PATH.dirname(sourceFilePath) + "/" + uri.replace(/^@/, "");
                             }
@@ -264,9 +274,9 @@ exports.compile = function (sourceCode, sourceFilePath) {
             if (replacement !== null) {
 
                 if (VERBOSE) console.log("Replace", variableName, "with", replacement);
-                
+
                 compiledSourceCode = compiledSourceCode.replace(
-                    new RegExp("(^[\\s\\t]+|^[\\s\\t]+(?:export|local)\\s|[\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"])", "mg"),
+                    new RegExp("(^[\\s\\t]+|^[\\s\\t]*(?:export|local)\\s|[\\$\\{])" + REGEXP_ESCAPE(variableName) + "([\\s\\}=\\[\\]\"'])", "mg"),
                     replacement
                 );
             }

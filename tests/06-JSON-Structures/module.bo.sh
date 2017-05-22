@@ -1,9 +1,9 @@
 #!/usr/bin/env bash.origin.script
 
-local pureJSON
+local json
 
-function EXPORTS_setPureJSON {
-    pureJSON={
+function EXPORTS_setJSON {
+    json={
         "arg1": "$1",
         "nastyString": "_\$1_\$h_-_'_\"_#_(_)_{_}_^_",
 #        "commented": "out",
@@ -32,6 +32,14 @@ function EXPORTS_setPureJSON {
 #    }
 }
 
+function EXPORTS_passJSON {
+    echo "[passJSON] args: $@"
+    echo "[passJSON] arg1: $1"
+    echo "[passJSON] arg2: $2"
+    echo "[passJSON] arg3: $3"
+    json="$1"
+}
+
 function EXPORTS_print {
-		echo "[pure-json]: $pureJSON"
+    echo "[json]: $json"
 }
