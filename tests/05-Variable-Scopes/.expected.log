@@ -1,26 +1,50 @@
+[ourInstance1] global1: global1value
+[ourInstance1] global1: global1value
+[ourInstance1] global2: global2value
+[ourInstance1] global2: global2value
 [ourInstance1] __ARG1__: 
 [ourInstance1] singletonValue: 
 [ourInstance1] instanceValue: 
 [ourInstance1] instanceArray[1]: 
 --
+[ourInstance1] global1: global1value
+[ourInstance1] global1: global1value
+[ourInstance1] global2: global2value
+[ourInstance1] global2: global2value
 [ourInstance1] __ARG1__: 
 [ourInstance1] singletonValue: default-2-val
 [ourInstance1] instanceValue: 
 [ourInstance1] instanceArray[1]: 
+[ourInstance1] global1: global1value
+[ourInstance1] global1: global1value
+[ourInstance1] global2: global2value
+[ourInstance1] global2: global2value
 [ourInstance1] __ARG1__: 
 [ourInstance1] singletonValue: instance-1-val
 [ourInstance1] instanceValue: instance-1-val
 [ourInstance1] instanceArray[1]: instance-1-val
 --
+[ourInstance2] global1: global1value
+[ourInstance2] global1: global1value
+[ourInstance2] global2: global2value
+[ourInstance2] global2: global2value
 [ourInstance2] __ARG1__: default-2-val
 [ourInstance2] singletonValue: instance-1-val
 [ourInstance2] instanceValue: default-2-val
 [ourInstance2] instanceArray[1]: default-2-val
+[ourInstance2] global1: global1value
+[ourInstance2] global1: global1value
+[ourInstance2] global2: global2value
+[ourInstance2] global2: global2value
 [ourInstance2] __ARG1__: default-2-val
 [ourInstance2] singletonValue: instance-2-val
 [ourInstance2] instanceValue: instance-2-val
 [ourInstance2] instanceArray[1]: instance-2-val
 --
+[ourInstance1] global1: global1value
+[ourInstance1] global1: global1value
+[ourInstance1] global2: global2value
+[ourInstance1] global2: global2value
 [ourInstance1] __ARG1__: 
 [ourInstance1] singletonValue: instance-2-val
 [ourInstance1] instanceValue: instance-1-val
