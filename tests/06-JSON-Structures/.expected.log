@@ -1,4 +1,5 @@
 FOO: { key: 'val' }
+FOO.key: val
 [json]: {"arg1":"bar","nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
 [passJSON] args: {"nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
 [passJSON] arg1: {"nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
