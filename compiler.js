@@ -102,6 +102,10 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         // Escape '\$'
                         .replace(/\\\$/g, '\\\\$');
 
+                    if (VERBOSE) console.log("Raw JSON section:", buffer);
+
+                    buffer = buffer.replace(/: (\$\{?[^,\}\n]+?\}?)(,?)$/m, ': "__UNQUOTE__$1__UNQUOTE__"$2');
+
                     if (VERBOSE) console.log("Parsing JSON section:", buffer);
 
                     var purified = CODEBLOCK.purifyCode(buffer, {
@@ -116,6 +120,10 @@ exports.compile = function (sourceCode, sourceFilePath) {
 
                     ret += '"'
                         + JSON.stringify(JSON.parse(purified))
+                        // Reverse '__UNQUOTE__$__UNQUOTE__'
+                        .replace(/("__UNQUOTE__|__UNQUOTE__")/g, '')
+                        // Escape "`"
+                        .replace(/`/g, '&#96;')
                         // Escape all backslashes as we are wrapping again
                         .replace(/\\/g, '\\\\')
                         // Escape all quotes as we are wrapping again
@@ -166,6 +174,8 @@ exports.compile = function (sourceCode, sourceFilePath) {
 
         // Quote all /'/ so that they will not interfere with 'source <(echo ' in template at runtime.
         compiledSourceCode = compiledSourceCode.replace(/'/g, "'\"'\"'");
+        // Also fix with ''"'"''
+        compiledSourceCode = compiledSourceCode.replace(/\\'"'"'/g, "''\"'\"''");
 
         // Elevate instance variable in layer so it is frozen when module constructed.
         compiledSourceCode = compiledSourceCode.replace(/(\$\{___bo_module_instance_alias___\})/g, "'$1'");

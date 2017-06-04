@@ -25,6 +25,7 @@ function EXPORTS_setJSON {
             key: "val"
         }
         console.log("FOO:", foo);
+        console.log("FOO.key:", foo[\'key\']);
     '
 
 #    {
