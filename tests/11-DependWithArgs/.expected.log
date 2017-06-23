@@ -1,6 +1,6 @@
-__CALLER_DIRNAME__: TeStLoCaLiZeD
-__DEPEND__: {"mod":{"./module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
-__DEPEND__: {
+[2]__CALLER_DIRNAME__: TeStLoCaLiZeD
+[0]__DEPEND__: {"mod":{"./module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
+[0]__DEPEND__: {
     "mod": {
         "./module.bo.sh": {
             "init": {
@@ -15,9 +15,9 @@ __DEPEND__: {
         }
     }
 }
-__CALLER_DIRNAME__: TeStLoCaLiZeD
-__ARGS__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
-__ARGS__: {
+[2]__CALLER_DIRNAME__: TeStLoCaLiZeD
+[2]__ARGS__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+[2]__ARGS__: {
     "init": {
         "string": "value",
         "array": [
@@ -28,8 +28,8 @@ __ARGS__: {
         "null": null
     }
 }
-__ARG1__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
-__ARG1__: {
+[2]__ARG1__: {"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+[2]__ARG1__: {
     "init": {
         "string": "value",
         "array": [
@@ -40,8 +40,8 @@ __ARG1__: {
         "null": null
     }
 }
-Args: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
-Args: {
+[2] Args: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+[2] Args: {
     "func": {
         "string": "value",
         "array": [
@@ -52,8 +52,8 @@ Args: {
         "null": null
     }
 }
-Arg1: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
-Arg1: {
+[2] Arg1: {"func":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}
+[2] Arg1: {
     "func": {
         "string": "value",
         "array": [

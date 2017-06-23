@@ -1,11 +1,11 @@
 FOO: { key: 'val' }
 FOO.key: val
-[json]: {"arg1":"bar","nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
-[passJSON] args: {"nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
-[passJSON] arg1: {"nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
+[json]: {"arg1":"bar","nastyString":"_$1_$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
+[passJSON] args: {"nastyString":"_$1_$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
+[passJSON] arg1: {"nastyString":"_$1_$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
 [passJSON] arg2: 
 [passJSON] arg3: 
-[json]: {"nastyString":"_\$1_\$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
+[json]: {"nastyString":"_$1_$h_-_'_\"_#_(_)_{_}_^_","level-1-key":{"level-2-key":{"string":"foo","boolean":true,"integer":1,"float":0.1,"null":null}}}
 [passJSON] args: {"key":"val"} --extra arg
 [passJSON] arg1: {"key":"val"}
 [passJSON] arg2: --extra
