@@ -185,17 +185,25 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledSourceCode = compiledSourceCode.replace(/(\$\{___bo_module_instance_alias___\})/g, "'$1'");
 
 
-
         // Prefix variables
         var variables = {};
         var re = /^\s*(single|declare(?: [-\w]+)?|local|depend) (?:(".+?"\n)|([^\n=]+)[ ;=])?([^\n]*)$/mg;
         var match = null;
 
         while ( (match = re.exec(compiledSourceCode)) ) {
-            if (!match[2]) {
-                match[2] = match[3];
-                match[3] = (void 0);
+
+            if (/^(single$|declare )/.test(match[1])) {
+                match[2] = match[4];
+                match[4] = (void 0);
+            } else {
+                if (!match[2]) {
+                    match[2] = match[3];
+                    match[3] = (void 0);
+                }
             }
+
+            if (VERBOSE) console.log("match:", match);
+
             if (
                 !variables[match[2]] ||
                 (
@@ -215,6 +223,8 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 match[0].replace(/^(\s*)local/, "$1export")
             );
         }
+
+        if (VERBOSE) console.log("variables:", variables);
 
         Object.keys(variables).forEach(function (variableName) {
             if (VERBOSE) console.log("Prefixing variable '" + variableName + "' for module '" + sourceFilePath + "'");
