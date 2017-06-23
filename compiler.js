@@ -129,10 +129,14 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         // Escape all quotes as we are wrapping again
                         .replace(/"/g, '\\"')
                         // Cleanup escaping for all '\$' variables as they should not be replaced in the bash layer.
-                        .replace(/\\\\\$/g, '\\\$')
+                        .replace(/([^\\])\\\\\\\\\$/g, '$1\\\$')
+                        // Cleanup escaping for all '\\\$' variables as they should not be replaced in the bash layer.
+                        .replace(/([^\\])\\\\\\\\\\\\\\\\\$/g, '$1\\\\\\\\\\$')
+
                         // '"\\n\\\"' -> '"\\\\\n\\\"'
                         .replace(/"(\\\\n\\\\\\)"/g, '"\\\\\\$1"')
 
+// NOTE: Old rules that have been fixed above as boundaries were reviewed.
                         // Escape JSON '"' as we are wrapping in '"'
 //                        .replace(/"/g, '\\"')
                         // The following are used to escape regular expressions used in the JSON/codeblocks.
@@ -184,8 +188,9 @@ exports.compile = function (sourceCode, sourceFilePath) {
 
         // Prefix variables
         var variables = {};
-        var re = /^\s*(single|declare(?: [-\w]+)?|local|depend) (?:([^\n=]+)[ ;=])?([^\n]*)$/mg;
+        var re = /^\s*(single|declare(?: [-\w]+)?|local|depend) (?:(".+?"\n)|([^\n=]+)[ ;=])?([^\n]*)$/mg;
         var match = null;
+
         while ( (match = re.exec(compiledSourceCode)) ) {
             if (!match[2]) {
                 match[2] = match[3];
@@ -211,7 +216,6 @@ exports.compile = function (sourceCode, sourceFilePath) {
             );
         }
 
-
         Object.keys(variables).forEach(function (variableName) {
             if (VERBOSE) console.log("Prefixing variable '" + variableName + "' for module '" + sourceFilePath + "'");
 
@@ -221,17 +225,32 @@ exports.compile = function (sourceCode, sourceFilePath) {
 
                 var dependDeclarations = null;
                 try {
+
+                    variables[variableName].name = variables[variableName].name.replace(/\$\{([^\}]+)\}/g, '\\"___VaRsTaRt___$1___VaReNd___\\"');
+
                     dependDeclarations = JSON.parse(JSON.parse(variables[variableName].name));
                 } catch (err) {
+                    console.error("JSON:", variables[variableName].name);
                     err.message += " (while parsing 'depend' from file '" + sourceFilePath + "')";
                     err.stack += "\n(while parsing 'depend' from file '" + sourceFilePath + "')";
                     throw err;
                 }
 
+                function reheatConfigVariables (configString) {
+
+                    configString = configString.replace(/"___VaRsTaRt___(.+?)___VaReNd___"/g, "\${$1}");
+
+                    if (/^\$\{([^\}]+)\}$/.test(configString)) {
+                        configString = "'" + configString + "'";
+                    }
+
+                    return configString;
+                }
+
                 compiledSourceCode = compiledSourceCode.replace(
                     new RegExp("^" + REGEXP_ESCAPE(variables[variableName].match) + "$", "gm"),
                     [
-                        "'${___bo_module_instance_alias___}'__DEPEND=\"" + JSON.stringify(dependDeclarations).replace(/"/g, '\\"') + "\""
+                        "'${___bo_module_instance_alias___}'__DEPEND=\"" + reheatConfigVariables(JSON.stringify(dependDeclarations)).replace(/"/g, '\\"') + "\""
                     ].concat(
                         Object.keys(dependDeclarations).map(function (alias) {
                             var uri = dependDeclarations[alias];
@@ -252,7 +271,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                                 '    CALL_IMPL_' + alias + ' "$@"',
                                 '}',
                                 'export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
-                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + JSON.stringify(config).replace(/"/g, '\\\\\\"') + '"',
+                                'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + reheatConfigVariables(JSON.stringify(config)).replace(/"/g, '\\\\\\"') + '"',
                                 'export ___bo_module_instance_caller_dirname___='
                             ].join("\n");
                         })
