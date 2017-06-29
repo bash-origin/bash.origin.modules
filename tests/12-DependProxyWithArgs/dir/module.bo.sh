@@ -2,7 +2,7 @@
 
 depend {
     "impl": {
-		"./impl.bo.sh": ${__ARG1__}
+		"../impl.bo.sh": ${__ARG1__}
 	}
 }
 
@@ -19,5 +19,5 @@ echo "[1]__DEPEND__: $(CALL_impl validate "${__DEPEND__}")"
 
 function EXPORTS_run {
 
-    CALL_impl run $@
+    PROXY_impl run $@
 }

@@ -2,7 +2,7 @@
 
 depend {
     "mod": {
-		"./module.bo.sh": {
+		"./dir/module.bo.sh": {
 			"init": {
 				"string": "value",
 				"array": [

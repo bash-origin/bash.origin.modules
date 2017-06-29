@@ -280,6 +280,10 @@ exports.compile = function (sourceCode, sourceFilePath) {
                                 '    export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
                                 '    CALL_IMPL_' + alias + ' "$@"',
                                 '}',
+                                'function PROXY_' + alias + ' {',
+                                // NOTE: When we 'proxy' we *hide* ourselves from the module being called.
+                                '    CALL_IMPL_' + alias + ' "$@"',
+                                '}',
                                 'export ___bo_module_instance_caller_dirname___="' + PATH.dirname(sourceFilePath) + '"',
                                 'BO_requireModule "' + uri + '" as "CALL_IMPL_' + alias + '" "' + reheatConfigVariables(JSON.stringify(config)).replace(/"/g, '\\\\\\"') + '"',
                                 'export ___bo_module_instance_caller_dirname___='
