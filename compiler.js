@@ -64,7 +64,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                     // TODO: Make this more generic.
                     if (/--eval '$/.test(line)) {
                         skipSection = {
-                            lookFor: /^\s*'\s*$/
+                            lookFor: /^\s*'\s*/
                         }
                     }
                 } else {
