@@ -1,9 +1,9 @@
-[2]__CALLER_DIRNAME__: TeStLoCaLiZeD
+[2]__CALLER_DIRNAME__: TeStLoCaLiZeD/dir
 [1]__CALLER_DIRNAME__: TeStLoCaLiZeD
-[1]__DEPEND__: {"impl":{"./impl.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
+[1]__DEPEND__: {"impl":{"../impl.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
 [1]__DEPEND__: {
     "impl": {
-        "./impl.bo.sh": {
+        "../impl.bo.sh": {
             "init": {
                 "string": "value",
                 "array": [
@@ -16,10 +16,10 @@
         }
     }
 }
-[0]__DEPEND__: {"mod":{"./module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
+[0]__DEPEND__: {"mod":{"./dir/module.bo.sh":{"init":{"string":"value","array":["item"],"integer":1,"boolean":true,"null":null}}}}
 [0]__DEPEND__: {
     "mod": {
-        "./module.bo.sh": {
+        "./dir/module.bo.sh": {
             "init": {
                 "string": "value",
                 "array": [
