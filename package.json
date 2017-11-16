@@ -1,6 +1,9 @@
 {
     "name": "bash.origin.modules",
     "version": "0.1.24",
+    "pm": {
+        "publish": "npm"
+    },
     "main": "./compiler.js",
     "dependencies": {
         "bash.origin.test": "^0.1.33",
