@@ -6,13 +6,7 @@
     },
     "main": "./compiler.js",
     "dependencies": {
-        "bash.origin.test": "^0.1.33",
-        "bluebird": "^3.4.6",
-        "codeblock": "^0.3.4",
-        "escape-string-regexp": "^1.0.5",
-        "fs-extra": "^1.0.0",
-        "minimist": "^1.2.0",
-        "uuid": "^3.0.1"
+        "bash.origin.workspace": "^0.2.19"
     },
     "scripts": {
         "test": "bash.origin.test tests"
