@@ -9,24 +9,24 @@ __bash_origin_modules__BO_DIR__="$__BO_DIR__"
 
 function compile {
 
-		if [ ! -e "$__bash_origin_modules__BO_DIR__/node_modules" ]; then
-				pushd "$__bash_origin_modules__BO_DIR__" > /dev/null
-						[ -z "$BO_IS_TEST_RUN" ] || echo "TEST_MATCH_IGNORE>>>"
-						BO_run_npm install
-						[ -z "$BO_IS_TEST_RUN" ] || echo "<<<TEST_MATCH_IGNORE"
-				popd > /dev/null
-		fi
+	if [ ! -e "$__bash_origin_modules__BO_DIR__/node_modules" ]; then
+		pushd "$__bash_origin_modules__BO_DIR__" > /dev/null
+			[ -z "$BO_IS_TEST_RUN" ] || echo "TEST_MATCH_IGNORE>>>"
+			BO_run_npm install
+			[ -z "$BO_IS_TEST_RUN" ] || echo "<<<TEST_MATCH_IGNORE"
+		popd > /dev/null
+	fi
 
-		local sourcePath="$1"
-		local targetPath="$2"
-		local shebang="bash.origin.script"
+	local sourcePath="$1"
+	local targetPath="$2"
+	local shebang="bash.origin.script"
 
-		if [[ "$(head -1 "$sourcePath")" != *"$shebang"* ]] ; then
-				echo "ERROR: Module source at '$sourcePath' does not declare '$shebang'! (pwd: $(pwd))"
-				exit 1
-		fi
+	if [[ "$(head -1 "$sourcePath")" != *"$shebang"* ]] ; then
+		echo "ERROR: Module source at '$sourcePath' does not declare '$shebang'! (pwd: $(pwd))"
+		exit 1
+	fi
 
-		BO_log "$BO_VERBOSE" "Compiling source module '$sourcePath' to '$targetPath'"
+	BO_log "$BO_VERBOSE" "Compiling source module '$sourcePath' to '$targetPath'"
 
-		BO_run_recent_node "${__bash_origin_modules__BO_DIR__}/compiler.js" "$sourcePath" "$targetPath"
+	BO_run_recent_node "${__bash_origin_modules__BO_DIR__}/compiler.js" "$sourcePath" "$targetPath"
 }

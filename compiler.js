@@ -1,19 +1,19 @@
 
-const LIB = require("bash.origin.workspace").forPackage(__dirname).LIB;
+const Promise = require("bluebird");
+const MINIMIST = require("minimist");
+const PATH = require("path");
+const FS = require("fs-extra");
+const UUID_V4 = require("uuid/v4");
+const CRYPTO = require("crypto");
+const CODEBLOCK = require("codeblock");
+const ESCAPE_REGEXP = require("escape-regexp");
 
-const Promise = LIB.BLUEBIRD;
-const MINIMIST = LIB.MINIMIST;
-const PATH = LIB.PATH;
-const FS = LIB.FS_EXTRA;
-const UUID_V4 = LIB.UUID.v4;
-const CRYPTO = LIB.CRYPTO;
 Promise.promisifyAll(FS);
 FS.existsAsync = function (path) {
     return new Promise(function (resolve) {
         return FS.exists(path, resolve);
     });
 };
-const CODEBLOCK = LIB.CODEBLOCK;
 
 const VERBOSE = !!process.env.BO_VERBOSE || false;
 
@@ -87,7 +87,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         "{"
                     ];
                     startIndent = m[1];
-                    endRe = new RegExp("^" + LIB.ESCAPE_REGEXP(startIndent) + "\\}(\\s.*)?$");
+                    endRe = new RegExp("^" + ESCAPE_REGEXP(startIndent) + "\\}(\\s.*)?$");
                     startBuffer = line.replace(/\{$/, "");
                     return null;
                 }
@@ -220,7 +220,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 };
             }
             compiledSourceCode = compiledSourceCode.replace(
-                new RegExp(LIB.ESCAPE_REGEXP(match[0]), "g"),
+                new RegExp(ESCAPE_REGEXP(match[0]), "g"),
                 match[0].replace(/^(\s*)local/, "$1export")
             );
         }
@@ -259,7 +259,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 }
 
                 compiledSourceCode = compiledSourceCode.replace(
-                    new RegExp("^" + LIB.ESCAPE_REGEXP(variables[variableName].match) + "$", "gm"),
+                    new RegExp("^" + ESCAPE_REGEXP(variables[variableName].match) + "$", "gm"),
                     [
                         "'${___bo_module_instance_alias___}'__DEPEND=\"" + reheatConfigVariables(JSON.stringify(dependDeclarations)).replace(/"/g, '\\"') + "\""
                     ].concat(
@@ -301,14 +301,14 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 // Remove non-initializing singleton declaration.
                 // We do not need to declare it in bash.
                 compiledSourceCode = compiledSourceCode.replace(
-                    new RegExp("^" + LIB.ESCAPE_REGEXP(variables[variableName].match.replace(/=.*$/, "")) + " *$", "gm"),
+                    new RegExp("^" + ESCAPE_REGEXP(variables[variableName].match.replace(/=.*$/, "")) + " *$", "gm"),
                     "#" + variables[variableName].match.replace(/=.*$/, "")
                 );
 
                 if (typeof variables[variableName].value !== "undefined") {
                     // TODO: Fix prefixing of variables with value assignment.
                     compiledSourceCode = compiledSourceCode.replace(
-                        new RegExp("^" + LIB.ESCAPE_REGEXP(variables[variableName].match) + "\\s*$", "gm"),
+                        new RegExp("^" + ESCAPE_REGEXP(variables[variableName].match) + "\\s*$", "gm"),
                         variables[variableName].match.replace(/^(\s*)single\s+/, "$1")
                     );
                 }
@@ -320,7 +320,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                 if (VERBOSE) console.log("Replace", variableName, "with", replacement);
 
                 compiledSourceCode = compiledSourceCode.replace(
-                    new RegExp("(^[\\s\\t]+|^[\\s\\t]*(?:export|local)\\s|[\\$\\{])" + LIB.ESCAPE_REGEXP(variableName) + "([\\s\\}=\\[\\]\"'])", "mg"),
+                    new RegExp("(^[\\s\\t]+|^[\\s\\t]*(?:export|local)\\s|[\\$\\{])" + ESCAPE_REGEXP(variableName) + "([\\s\\}=\\[\\]\"'])", "mg"),
                     replacement
                 );
             }
@@ -347,7 +347,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
         functionNames.forEach(function (functionName) {
             if (VERBOSE) console.log("Prefixing function '" + functionName + "' for module '" + sourceFilePath + "'");
             compiledSourceCode = compiledSourceCode.replace(
-                new RegExp("([\\s`!\\(\"'])" + LIB.ESCAPE_REGEXP(functionName) + "([\\s\\{;\\)\"'])", "g"),
+                new RegExp("([\\s`!\\(\"'])" + ESCAPE_REGEXP(functionName) + "([\\s\\{;\\)\"'])", "g"),
                 "$1'${___bo_module_instance_alias___}'__" + functionName + "$2"
             );
         });
