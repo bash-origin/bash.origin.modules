@@ -14,7 +14,7 @@
         "minimist": "^1.2.0"
     },
     "devDependencies": {
-        "bash.origin.workspace": "^0.2.33"
+        "bash.origin.workspace": "^0.2.37"
     },
     "scripts": {
         "test": "bash.origin.test tests"
