@@ -3,3 +3,4 @@
 /.installed.*
 *~.compiled.*
 /tests/.deps/
+/.installed
