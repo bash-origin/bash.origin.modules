@@ -7,17 +7,23 @@
     "main": "./compiler.js",
     "dependencies": {
         "escape-regexp": "^0.0.1",
-        "fs-extra": "^4.0.2",
-        "uuid": "^3.1.0",
-        "codeblock": "^0.3.7",
-        "bluebird": "^3.5.1",
+        "fs-extra": "^7.0.0",
+        "uuid": "^3.3.2",
+        "codeblock": "^0.3.11",
+        "bluebird": "^3.5.2",
         "minimist": "^1.2.0"
     },
     "devDependencies": {
-        "bash.origin.workspace": "^0.2.37"
+        "bash.origin.lib": "^0.2.15"
     },
     "scripts": {
         "test": "bash.origin.test tests",
         "postinstall": "touch .installed"
+    },
+    "config": {
+        "bash.origin.lib": {
+            "pack": "default",
+            "stream": "0.1"
+        }
     }
 }
