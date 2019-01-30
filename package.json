@@ -9,7 +9,7 @@
         "escape-regexp": "^0.0.1",
         "fs-extra": "^7.0.0",
         "uuid": "^3.3.2",
-        "codeblock": "^0.3.11",
+        "codeblock": "^0.3.14",
         "bluebird": "^3.5.2",
         "minimist": "^1.2.0"
     },
