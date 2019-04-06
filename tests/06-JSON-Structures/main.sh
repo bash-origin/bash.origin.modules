@@ -1,6 +1,6 @@
 #!/usr/bin/env bash.origin.script
 
-pushd "$__BO_DIR__" > /dev/null
+pushd "$__DIRNAME__" > /dev/null
 
 	BO_requireModule "./module.bo.sh" as "ourInstance"
 

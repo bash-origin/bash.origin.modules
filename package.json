@@ -13,7 +13,7 @@
         "bluebird": "^3.5.2",
         "minimist": "^1.2.0"
     },
-    "devDependencies": {
+    "__devDependencies": {
         "bash.origin": "^0.1.90",
         "bash.origin.test": "^0.1.40"
     },
