@@ -361,9 +361,9 @@ exports.compile = function (sourceCode, sourceFilePath) {
         // If '__RT_DIRNAME__' variable is needed (found in code) we make sure the directory exists
         if (/__RT_DIRNAME__/.test(compiledSourceCode)) {
             moduleInitCode = moduleInitCode.concat([
-                'if [ ! -e "\'${___bo_module_rt_caller_pwd___}\'/.rt/' + rtDirname + '" ]; then',
+                'if [ ! -e "\'${___bo_module_rt_caller_pwd___}\'/.~rt/' + rtDirname + '" ]; then',
                     'set +e',
-                    'mkdir -p "\'${___bo_module_rt_caller_pwd___}\'/.rt/' + rtDirname + '" || true',
+                    'mkdir -p "\'${___bo_module_rt_caller_pwd___}\'/.~rt/' + rtDirname + '" || true',
                     'set -e',
                 'fi'
             ]);
@@ -374,7 +374,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__FILENAME__\}?/g, sourceFilePath);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__BASENAME__\}?/g, PATH.basename(sourceFilePath));
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__DIRNAME__\}?/g, dirname);
-        compiledSourceCode = compiledSourceCode.replace(/\$\{?__RT_DIRNAME__\}?/g, "'${___bo_module_rt_caller_pwd___}'/.rt/" + rtDirname);
+        compiledSourceCode = compiledSourceCode.replace(/\$\{?__RT_DIRNAME__\}?/g, "'${___bo_module_rt_caller_pwd___}'/.~rt/" + rtDirname);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__BUILD_UUID__\}?/g, buildUUID);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__IMPL_HASH__\}?/g, moduleImplementationUUID);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__IMPL_HASH7__\}?/g, moduleImplementationUUID.substring(0, 7));
@@ -400,7 +400,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
         compiledModuleCode = compiledModuleCode.replace(/%%%___FILENAME___%%%/g, sourceFilePath);
         compiledModuleCode = compiledModuleCode.replace(/%%%__BASENAME__%%%/g, PATH.basename(sourceFilePath));
         compiledModuleCode = compiledModuleCode.replace(/%%%___DIRNAME___%%%/g, dirname);
-        compiledModuleCode = compiledModuleCode.replace(/%%%__RT_DIRNAME__%%%/g, "'${___bo_module_rt_caller_pwd___}'/.rt/" + rtDirname);
+        compiledModuleCode = compiledModuleCode.replace(/%%%__RT_DIRNAME__%%%/g, "'${___bo_module_rt_caller_pwd___}'/.~rt/" + rtDirname);
         compiledModuleCode = compiledModuleCode.replace(/%%%___BUILD_UUID___%%%/g, buildUUID);
 
         var rtContextUID = CRYPTO.createHash('sha1').update(
