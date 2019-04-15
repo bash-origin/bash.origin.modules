@@ -152,7 +152,7 @@ exports.compile = function (sourceCode, sourceFilePath) {
                         + '"';
 
                 } catch (err) {
-                    console.error("purified:", purified);
+                    process.stderr.write("purified: " + purified +"\n");
                     console.error("ERROR: " + err.message + " while parsing JSON:", buffer, err.stack);
                     throw err;
                     //ret += buffer;
