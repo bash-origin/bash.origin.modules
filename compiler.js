@@ -369,11 +369,10 @@ exports.compile = function (sourceCode, sourceFilePath) {
             ]);
         }
 
-
         // Replace bash.origin modules reserved environment variables
-        compiledSourceCode = compiledSourceCode.replace(/\$\{?__FILENAME__\}?/g, sourceFilePath);
-        compiledSourceCode = compiledSourceCode.replace(/\$\{?__BASENAME__\}?/g, PATH.basename(sourceFilePath));
-        compiledSourceCode = compiledSourceCode.replace(/\$\{?__DIRNAME__\}?/g, dirname);
+        compiledSourceCode = compiledSourceCode.replace(/(?<!\\)\$\{?__FILENAME__\}?/g, sourceFilePath);
+        compiledSourceCode = compiledSourceCode.replace(/(?<!\\)\$\{?__BASENAME__\}?/g, PATH.basename(sourceFilePath));
+        compiledSourceCode = compiledSourceCode.replace(/(?<!\\)\$\{?__DIRNAME__\}?/g, dirname);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__RT_DIRNAME__\}?/g, "'${___bo_module_rt_caller_pwd___}'/.~rt/" + rtDirname);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__BUILD_UUID__\}?/g, buildUUID);
         compiledSourceCode = compiledSourceCode.replace(/\$\{?__IMPL_HASH__\}?/g, moduleImplementationUUID);

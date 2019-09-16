@@ -24,6 +24,6 @@
     }
   },
   "devDependencies": {
-    "bash.origin.test": "^0.2.0-pre.0"
+    "bash.origin.test": "^0.2.0-pre.2"
   }
 }
