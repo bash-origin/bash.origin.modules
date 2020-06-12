@@ -1,6 +1,6 @@
 {
   "name": "bash.origin.modules",
-  "version": "0.2.0-pre.5",
+  "version": "0.3.0-pre.0",
   "pm": {
     "publish": "npm"
   },
@@ -9,10 +9,10 @@
     "escape-regexp": "^0.0.1",
     "fs-extra": "^7.0.0",
     "uuid": "^3.3.2",
-    "codeblock": "^0.3.16-pre.2",
+    "codeblock": "^0.4.0-pre.0",
     "bluebird": "^3.5.2",
     "minimist": "^1.2.0",
-    "lib.json": "^0.0.6-pre.6"
+    "lib.json": "^0.1.0-pre.0"
   },
   "scripts": {
     "test": "bash.origin.test tests"
@@ -24,6 +24,6 @@
     }
   },
   "devDependencies": {
-    "bash.origin.test": "^0.2.0-pre.10"
+    "bash.origin.test": "^0.3.0-pre.0"
   }
 }
