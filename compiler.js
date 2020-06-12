@@ -254,36 +254,66 @@ exports.compile = async function (sourceCode, sourceFilePath) {
             await Promise.all(Object.keys(dependDeclarations).map(async function (alias) {
                 let uri = dependDeclarations[alias];
 
+// console.error("uri", alias, uri);
+
+                async function resolveUri (uri) {
+                    // For now we only resolve pinf.it compatible URIs here and leave the rest to bash.origin.
+                    const uriMatch = uri.match(/^([^@#\s]+)\s*#\s*([^\s]+)$/);
+
+                    if (!uriMatch) {
+                        return null;
+                    }
+
+                    const lookups = {};
+                    // No assumptions interface.
+                    const noAssumptionLookup = `#!/gi0.BashOrigin.org/#!_${uriMatch[2].replace(/\//g, '_')}.sh`;
+                    lookups[noAssumptionLookup] = '#!/gi0.BashOrigin.org/#!';
+                    const doc = await LIB_JSON.docFromFilepathsInOwnAndParent(PATH.dirname(sourceFilePath), lookups, {
+                        lookupDirs: [
+                            '',
+                            'node_modules'
+                        ]
+                    });
+                    if (
+                        doc &&
+                        doc[lookups[noAssumptionLookup]] &&
+                        doc[lookups[noAssumptionLookup]][uriMatch[1]]
+                    ) {
+                        dependDeclarations[alias] = PATH.join(sourceFilePath, '..', doc[lookups[noAssumptionLookup]][uriMatch[1]]);
+                    } else {
+                        // TODO: Use colored error logger so message stands out.
+                        console.error('noAssumptionLookup:', noAssumptionLookup);
+                        console.error('doc:', doc);
+                        throw new Error(`Cannot resolve package uri '${uriMatch[1]}' to path! Used in '${sourceFilePath}'.`);
+                    }
+                }
+
+                if (
+                    uri &&
+                    typeof uri === 'object'
+                ) {
+                    const key = Object.keys(uri)[0];
+
+// console.log("RESOLVE", key);
+                    const resolvedUri = await resolveUri(key);
+
+// console.log("RESOLVE RESULT", resolvedUri);
+                    if (resolvedUri) {
+                        const obj = {};
+                        obj[resolvedUri] = uri[key];
+// console.log("BEFORE", dependDeclarations);
+                        dependDeclarations[alias] = obj;
+// console.log("ASFTER", dependDeclarations);
+                    }
+
+                } else
                 if (
                     uri &&
                     typeof uri === 'string'
                 ) {
-                    // For now we only resolve pinf.it compatible URIs here and leave the rest to bash.origin.
-                    const uriMatch = uri.match(/^([^@#\s]+)\s*#\s*([^\s]+)$/);
-
-                    if (uriMatch) {
-                        const lookups = {};
-                        // No assumptions interface.
-                        const noAssumptionLookup = `#!/gi0.BashOrigin.org/#!_${uriMatch[2].replace(/\//g, '_')}.sh`;
-                        lookups[noAssumptionLookup] = '#!/gi0.BashOrigin.org/#!';
-                        const doc = await LIB_JSON.docFromFilepathsInOwnAndParent(PATH.dirname(sourceFilePath), lookups, {
-                            lookupDirs: [
-                                '',
-                                'node_modules'
-                            ]
-                        });
-                        if (
-                            doc &&
-                            doc[lookups[noAssumptionLookup]] &&
-                            doc[lookups[noAssumptionLookup]][uriMatch[1]]
-                        ) {
-                            dependDeclarations[alias] = PATH.join(sourceFilePath, '..', doc[lookups[noAssumptionLookup]][uriMatch[1]]);
-                        } else {
-                            // TODO: Use colored error logger so message stands out.
-                            console.error('noAssumptionLookup:', noAssumptionLookup);
-                            console.error('doc:', doc);
-                            throw new Error(`Cannot resolve package uri '${uriMatch[1]}' to path! Used in '${sourceFilePath}'.`);
-                        }
+                    const resolvedUri = await resolveUri(uri);
+                    if (resolvedUri) {
+                        dependDeclarations[alias] = resolvedUri;
                     }
                 }
             }));
